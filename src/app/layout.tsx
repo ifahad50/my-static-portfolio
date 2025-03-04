@@ -19,6 +19,7 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
+
 	return (
 		<html lang='en'>
 			<body className={montserrat.className}>
@@ -26,6 +27,7 @@ export default function RootLayout({
 				<main className='mx-6'>{children}</main>
 				<Footer />
 				{/* <NavBar /> */}
+
 			</body>
 		</html>
 	)

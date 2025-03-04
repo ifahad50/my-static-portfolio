@@ -4,6 +4,7 @@ import ProjectsSection from '@/components/ProjectsSection'
 import SkillsSection from '@/components/SkillsSection'
 import WorkExperienceSection from '@/components/WorkExperienceSection'
 import { useEffect, useState } from 'react'
+
 export default function Home() {
 	const [isBottom, setIsBottom] = useState(false)
 
@@ -25,21 +26,21 @@ export default function Home() {
 				<SkillsSection />
 				<WorkExperienceSection />
 				<ProjectsSection />
-				<div
-					className='fixed -bottom-7 left-0 w-full z-40'
-					style={{
-						boxShadow: isBottom
-							? '0px -3px 10px rgba(0,0,0,0.1)'
-							: '-27px -3px 391px 150px rgba(0,0,0,0.8)',
-						WebkitBoxShadow: isBottom
-							? '0px -3px 10px rgba(0,0,0,0.1)'
-							: '-27px -3px 391px 150px rgba(0,0,0,0.8)',
-						MozBoxShadow: isBottom
-							? '0px -3px 10px rgba(0,0,0,0.1)'
-							: '-27px -3px 391px 150px rgba(0,0,0,0.8)',
-					}}
-				></div>
 			</div>
+			<div
+				className='fixed -bottom-7 left-0 w-full z-40'
+				style={{
+					boxShadow: isBottom
+						? '0px -3px 10px rgba(0,0,0,0.1)'
+						: '-27px -3px 391px 150px rgba(0,0,0,0.8)',
+					WebkitBoxShadow: isBottom
+						? '0px -3px 10px rgba(0,0,0,0.1)'
+						: '-27px -3px 391px 150px rgba(0,0,0,0.8)',
+					MozBoxShadow: isBottom
+						? '0px -3px 10px rgba(0,0,0,0.1)'
+						: '-27px -3px 391px 150px rgba(0,0,0,0.8)',
+				}}
+			></div>
 		</>
 	)
 }
