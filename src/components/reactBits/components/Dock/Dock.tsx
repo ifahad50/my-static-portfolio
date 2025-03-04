@@ -204,7 +204,7 @@ export default function Dock({
 							baseItemSize={baseItemSize}
 						>
 							<DockIcon>{item.icon}</DockIcon>
-							<DockLabel>{item.label}</DockLabel>
+							<DockLabel className='md:block hidden'>{item.label}</DockLabel>
 						</DockItem>
 					</Link>
 				))}

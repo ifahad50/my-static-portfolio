@@ -26,7 +26,7 @@ export default function RootLayout({
 				<ParticlesBackground />
 				<main className='mx-6'>{children}</main>
 				<Footer />
-				{/* <NavBar /> */}
+				<NavBar />
 
 			</body>
 		</html>
