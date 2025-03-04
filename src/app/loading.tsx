@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { FaSpaceShuttle } from "react-icons/fa";
 
 export default function Loader() {
