@@ -1,5 +1,4 @@
 export interface ProjectType {
-    id: number;
     slug: string;
     title: string;
     headerImage: string;
@@ -9,7 +8,7 @@ export interface ProjectType {
 }
 export const projects: ProjectType[] = [
     {
-        id: 1,
+
         slug: 'custom-e-commerce-solution',
         title: 'Custom E-Commerce Solution',
         headerImage: '/project-assets/international-salon-supplies-home.png',
@@ -129,7 +128,6 @@ This solution has proven to be a robust, scalable, and efficient tool for busine
 <div class="ql-block" data-block-id="block-df3f36e4-6f9c-4289-9a20-ab98b6f4a85c"><a class="ql-link" target="_blank" rel="noopener noreferrer" href="https://www.internationalsalonsupplies.com.au/">https://www.internationalsalonsupplies.com.au/</a></div>`,
     },
     {
-        id: 2,
         slug: 'content-management-system',
         title: 'Content Management System',
         headerImage: '/project-assets/content-management-system.png',
@@ -244,7 +242,6 @@ This solution has proven to be a robust, scalable, and efficient tool for busine
     }
     ,
     {
-        id: 3,
         slug: 'n8n-integrations',
         title: 'n8n - Integrations',
         headerImage: '/project-assets/n8n-integrations.png',
@@ -289,7 +286,6 @@ This solution has proven to be a robust, scalable, and efficient tool for busine
 </ul>`
     },
     {
-        id: 4,
         slug: 'oracle-pilbara-ports',
         title: 'Oracle - Pilbara Ports',
         headerImage: '/project-assets/pilbaraports.jpg',

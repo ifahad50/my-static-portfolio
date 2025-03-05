@@ -1,6 +1,7 @@
 'use client'
 import HeroSection from '@/components/HeroSection'
 import ProjectsSection from '@/components/ProjectsSection'
+import RecommendationsSection from '@/components/RecommendationsSection'
 import SkillsSection from '@/components/SkillsSection'
 import WorkExperienceSection from '@/components/WorkExperienceSection'
 import { useEffect, useState } from 'react'
@@ -23,6 +24,7 @@ export default function Home() {
 		<>
 			<div>
 				<HeroSection />
+				<RecommendationsSection />
 				<SkillsSection />
 				<WorkExperienceSection />
 				<ProjectsSection />

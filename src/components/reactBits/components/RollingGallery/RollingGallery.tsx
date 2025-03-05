@@ -1,178 +1,184 @@
-/*
-	jsrepo 1.41.0
-	Installed from https://reactbits.dev/ts/tailwind/
-	26-02-2025
-*/
+'use client'
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
-  motion,
-  useMotionValue,
-  useAnimation,
-  useTransform,
-  PanInfo,
-} from "framer-motion";
-
-const IMGS: string[] = [
-  "https://images.unsplash.com/photo-1528181304800-259b08848526?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1495103033382-fe343886b671?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1506781961370-37a89d6b3095?q=80&w=3264&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1599576838688-8a6c11263108?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1494094892896-7f14a4433b7a?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://plus.unsplash.com/premium_photo-1664910706524-e783eed89e71?q=80&w=3869&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1503788311183-fa3bf9c4bc32?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1585970480901-90d6bb2a48b5?q=80&w=3774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-];
+	motion,
+	useMotionValue,
+	useAnimation,
+	useTransform,
+	PanInfo,
+} from 'framer-motion'
+import { RecommendationCard } from '@/components/RecommendationsSection'
+import { RecommendationType } from '@/recommendation-data'
 
 interface RollingGalleryProps {
-  autoplay?: boolean;
-  pauseOnHover?: boolean;
-  images?: string[];
+	autoplay?: boolean
+	pauseOnHover?: boolean
+	images?: string[]
+	recommendations: RecommendationType[]
 }
 
 const RollingGallery: React.FC<RollingGalleryProps> = ({
-  autoplay = false,
-  pauseOnHover = false,
-  images = [],
+	autoplay = false,
+	pauseOnHover = false,
+	images = [],
+	recommendations,
 }) => {
-  // Use default images if none are provided
-  const galleryImages = images.length > 0 ? images : IMGS;
+	const [isScreenSizeSm, setIsScreenSizeSm] = useState<boolean>(false)
+	const [mounted, setMounted] = useState<boolean>(false)
 
-  const [isScreenSizeSm, setIsScreenSizeSm] = useState<boolean>(
-    window.innerWidth <= 640
-  );
-  useEffect(() => {
-    const handleResize = () => setIsScreenSizeSm(window.innerWidth <= 640);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+	useEffect(() => {
+		setIsScreenSizeSm(window.innerWidth <= 640)
+		setMounted(true)
 
-  // 3D geometry calculations
-  const cylinderWidth: number = isScreenSizeSm ? 1100 : 1800;
-  const faceCount: number = galleryImages.length;
-  const faceWidth: number = (cylinderWidth / faceCount) * 1.5;
-  const radius: number = cylinderWidth / (2 * Math.PI);
+		const handleResize = () => setIsScreenSizeSm(window.innerWidth <= 640)
+		window.addEventListener('resize', handleResize)
+		return () => window.removeEventListener('resize', handleResize)
+	}, [])
 
-  // Framer Motion values and controls
-  const dragFactor: number = 0.05;
-  const rotation = useMotionValue(0);
-  const controls = useAnimation();
+	// Don't calculate measurements until component is mounted
+	const cardWidth = mounted ? (isScreenSizeSm ? 300 : 400) : 300
+	const cardGap = mounted ? (isScreenSizeSm ? 8 : 8) : 8 // Unified gap size
+	const singleSetWidth = (cardWidth + cardGap) * recommendations.length
+	const totalWidth = singleSetWidth
 
-  // Create a 3D transform based on the rotation motion value
-  const transform = useTransform(
-    rotation,
-    (val: number) => `rotate3d(0,1,0,${val}deg)`
-  );
+	// Adjust drag sensitivity
+	const dragFactor: number = 1
 
-  const startInfiniteSpin = (startAngle: number) => {
-    controls.start({
-      rotateY: [startAngle, startAngle - 360],
-      transition: {
-        duration: 20,
-        ease: "linear",
-        repeat: Infinity,
-      },
-    });
-  };
+	// Framer Motion values and controls
+	const rotation = useMotionValue(0)
+	const controls = useAnimation()
 
-  useEffect(() => {
-    if (autoplay) {
-      const currentAngle = rotation.get();
-      startInfiniteSpin(currentAngle);
-    } else {
-      controls.stop();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoplay]);
+	// Create a 3D transform based on the rotation motion value
+	const transform = useTransform(
+		rotation,
+		(val: number) => `rotate3d(0,1,0,${val}deg)`
+	)
 
-  const handleUpdate = (latest: any) => {
-    if (typeof latest.rotateY === "number") {
-      rotation.set(latest.rotateY);
-    }
-  };
+	const startInfiniteSpin = (startPosition: number) => {
+		controls.start({
+			x: [startPosition, startPosition - singleSetWidth],
+			transition: {
+				duration: 80,
+				ease: 'linear',
+				repeat: Infinity,
+				repeatType: 'loop',
+				repeatDelay: 0,
+				onRepeat: () => {
+					rotation.set(startPosition)
+				},
+			},
+		})
+	}
 
-  const handleDrag = (_: any, info: PanInfo): void => {
-    controls.stop();
-    rotation.set(rotation.get() + info.offset.x * dragFactor);
-  };
+	useEffect(() => {
+		if (autoplay) {
+			startInfiniteSpin(0)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [autoplay, recommendations.length])
 
-  const handleDragEnd = (_: any, info: PanInfo): void => {
-    const finalAngle = rotation.get() + info.velocity.x * dragFactor;
-    rotation.set(finalAngle);
-    if (autoplay) {
-      startInfiniteSpin(finalAngle);
-    }
-  };
+	const handleUpdate = (latest: any) => {
+		if (typeof latest.x === 'number') {
+			rotation.set(latest.x)
+		}
+	}
 
-  const handleMouseEnter = (): void => {
-    if (autoplay && pauseOnHover) {
-      controls.stop();
-    }
-  };
+	const handleDrag = (_: any, info: PanInfo): void => {
+		controls.stop()
+		const newPosition = rotation.get() + info.delta.x
 
-  const handleMouseLeave = (): void => {
-    if (autoplay && pauseOnHover) {
-      const currentAngle = rotation.get();
-      startInfiniteSpin(currentAngle);
-    }
-  };
+		if (newPosition > 0) {
+			rotation.set(newPosition - singleSetWidth)
+		} else if (newPosition < -singleSetWidth) {
+			rotation.set(newPosition + singleSetWidth)
+		} else {
+			rotation.set(newPosition)
+		}
+	}
 
-  return (
-    <div className="relative h-[500px] w-full overflow-hidden">
-      <div
-        className="absolute top-0 left-0 h-full w-[48px] z-10"
-        style={{
-          background:
-            "linear-gradient(to left, rgba(0,0,0,0) 0%, #060606 100%)",
-        }}
-      />
-      <div
-        className="absolute top-0 right-0 h-full w-[48px] z-10"
-        style={{
-          background:
-            "linear-gradient(to right, rgba(0,0,0,0) 0%, #060606 100%)",
-        }}
-      />
-      <div className="flex h-full items-center justify-center [perspective:1000px] [transform-style:preserve-3d]">
-        <motion.div
-          drag="x"
-          dragElastic={0}
-          onDrag={handleDrag}
-          onDragEnd={handleDragEnd}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          animate={controls}
-          onUpdate={handleUpdate}
-          style={{
-            transform: transform,
-            rotateY: rotation,
-            width: cylinderWidth,
-            transformStyle: "preserve-3d",
-          }}
-          className="flex min-h-[200px] cursor-grab items-center justify-center [transform-style:preserve-3d]"
-        >
-          {galleryImages.map((url, i) => (
-            <div
-              key={i}
-              className="group absolute flex h-fit items-center justify-center p-[8%] [backface-visibility:hidden] md:p-[6%]"
-              style={{
-                width: `${faceWidth}px`,
-                transform: `rotateY(${(360 / faceCount) * i}deg) translateZ(${radius}px)`,
-              }}
-            >
-              <img
-                src={url}
-                alt="gallery"
-                className="pointer-events-none h-[120px] w-[300px] rounded-[15px] border-[3px] border-white object-cover transition-transform duration-300 ease-out group-hover:scale-105 sm:h-[100px] sm:w-[220px]"
-              />
-            </div>
-          ))}
-        </motion.div>
-      </div>
-    </div>
-  );
-};
+	const handleDragEnd = (_: any, info: PanInfo): void => {
+		const velocity = info.velocity.x * 0.2
+		const newPosition = rotation.get() + velocity
 
-export default RollingGallery;
+		if (autoplay) {
+			startInfiniteSpin(newPosition)
+		}
+	}
+
+	const handleMouseEnter = (): void => {
+		if (autoplay && pauseOnHover) {
+			controls.stop()
+			const currentPosition = rotation.get()
+			rotation.set(currentPosition)
+		}
+	}
+
+	const handleMouseLeave = (): void => {
+		if (autoplay && pauseOnHover) {
+			const currentPosition = rotation.get()
+			startInfiniteSpin(currentPosition)
+		}
+	}
+
+	if (!mounted) {
+		return null // or a loading placeholder
+	}
+
+	return (
+		<div
+			className='relative h-fit w-full overflow-hidden'
+			onMouseEnter={handleMouseEnter}
+			onMouseLeave={handleMouseLeave}
+		>
+			<div
+				className='absolute top-0 left-0 h-full w-[48px] z-10'
+				style={{
+					background:
+						'linear-gradient(to left, rgba(0,0,0,0) 0%, #171717 100%)',
+				}}
+			/>
+			<div
+				className='absolute top-0 right-0 h-full w-[48px] z-10'
+				style={{
+					background:
+						'linear-gradient(to right, rgba(0,0,0,0) 0%, #171717 100%)',
+				}}
+			/>
+			<div className='flex h-full items-center justify-center'>
+				<motion.div
+					drag='x'
+					dragElastic={0.2}
+					dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
+					onDrag={handleDrag}
+					onDragEnd={handleDragEnd}
+					animate={controls}
+					onUpdate={handleUpdate}
+					style={{
+						x: rotation,
+						display: 'flex',
+						gap: `${cardGap}px`,
+						paddingLeft: '24px',
+						paddingRight: '24px',
+					}}
+					className='cursor-grab active:cursor-grabbing'
+				>
+					{[...recommendations, ...recommendations].map((recommendation, i) => (
+						<motion.div
+							key={i}
+							style={{
+								width: cardWidth,
+								flex: `0 0 ${cardWidth}px`,
+							}}
+							whileTap={{ cursor: 'grabbing' }}
+						>
+							<RecommendationCard recommendation={recommendation} />
+						</motion.div>
+					))}
+				</motion.div>
+			</div>
+		</div>
+	)
+}
+
+export default RollingGallery

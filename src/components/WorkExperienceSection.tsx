@@ -1,10 +1,23 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import siteSettings from '@/site-setting'
 import SubHeading from './SubHeading'
 
 function WorkExperienceSection() {
-	const isBrowser = typeof window !== 'undefined'
+	const [isMobile, setIsMobile] = useState(false)
+
+	useEffect(() => {
+		setIsMobile(window.innerWidth < 768)
+
+		const handleResize = () => {
+			setIsMobile(window.innerWidth < 768)
+		}
+
+		window.addEventListener('resize', handleResize)
+		return () => window.removeEventListener('resize', handleResize)
+	}, [])
+
 	return (
 		<div className='w-full'>
 			<SubHeading text='Work Experience' />
@@ -52,9 +65,7 @@ function WorkExperienceSection() {
 									index % 2 === 1 ? 'md:pl-8' : 'md:pl-8 md:opacity-0'
 								}`}
 							>
-								{/* Show all items on mobile, but maintain desktop layout */}
-								{((isBrowser && window.innerWidth < 768) ||
-									index % 2 === 1) && (
+								{(isMobile || index % 2 === 1) && (
 									<>
 										<h3 className='font-bold text-xl underline underline-offset-4'>
 											{experience.title}
