@@ -89,7 +89,7 @@ function SkillsSection() {
 				},
 				{
 					icon: <SiOracle className='text-3xl' />,
-					name: 'Oracle Application Cloud',
+					name: 'Oracle Fusion',
 				},
 				{
 					icon: <SiOracle className='text-3xl' />,
@@ -101,11 +101,11 @@ function SkillsSection() {
 				},
 				{
 					icon: <SiOracle className='text-3xl' />,
-					name: 'Oracle Integration Cloud',
+					name: 'Integration Cloud',
 				},
 				{
 					icon: <SiOracle className='text-3xl' />,
-					name: 'Oracle Business Intelligence',
+					name: 'Oracle OTBI',
 				},
 			],
 		},
