@@ -4,6 +4,7 @@ import './globals.css'
 import Footer from '@/components/Footer'
 import NavBar from '@/components/NavBar'
 import ParticlesBackground from '@/components/ParticlesBackground'
+import siteSettings from '@/site-setting'
 
 const montserrat = Montserrat({
 	weight: '400',
@@ -11,7 +12,7 @@ const montserrat = Montserrat({
 })
 export const metadata: Metadata = {
 	title: 'Fahad Iqbal',
-	description: 'Fahad Iqbal',
+	description: `Hi, I am a ${siteSettings.position}`,
 }
 
 export default function RootLayout({
