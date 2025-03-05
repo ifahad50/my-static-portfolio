@@ -24,9 +24,11 @@ function ProjectsSection() {
 							height={300}
 						/>
 						<div className='p-2 md:p-4 flex flex-col gap-2 w-full'>
-							<p className='text-lg text-start w-full line-clamp-1 font-bold'>
-								{project.title}
-							</p>
+							<Link href={{ pathname: `/projects`, query: { slug: project.slug } }}>
+								<p className='text-lg text-start w-full line-clamp-1 font-bold'>
+									{project.title}
+								</p>
+							</Link>
 							<hr className='border-gray-200 w-full' />
 							<p className='text-sm text-start w-full line-clamp-6 min-h-[7rem]'>
 								{project.headerDescription}

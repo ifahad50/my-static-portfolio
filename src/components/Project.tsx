@@ -34,7 +34,7 @@ const Project: FC<ProjectProps> = ({ slug }) => {
             </div>
             <SubHeading text='Overview' />
             <div className='w-full bg-white/10 backdrop-blur-lg rounded-lg p-2 md:p-4'>
-                <p className=' md:text-lg'>{project.headerDescription}</p>
+                <p className='text-sm md:text-lg'>{project.headerDescription}</p>
             </div>
             <SubHeading text='Details' />
             <div className='w-full bg-white/10 backdrop-blur-lg rounded-lg p-2 md:p-4'>
