@@ -37,7 +37,7 @@ const RollingGallery: React.FC<RollingGalleryProps> = ({
 	}, [])
 
 	// Don't calculate measurements until component is mounted
-	const cardWidth = mounted ? (isScreenSizeSm ? 300 : 400) : 300
+	const cardWidth = mounted ? (isScreenSizeSm ? 400 : 600) : 300
 	const cardGap = mounted ? (isScreenSizeSm ? 8 : 8) : 8 // Unified gap size
 	const singleSetWidth = (cardWidth + cardGap) * recommendations.length
 	const totalWidth = singleSetWidth
