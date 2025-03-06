@@ -19,11 +19,6 @@ function HeroSection() {
 				{siteSettings.coverDescription}
 			</p>
 			<ContactBlocks />
-			<img
-				src='https://media.licdn.com/dms/image/v2/C5603AQFDI8TlRQF2mA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1659496917185?e=1746662400&v=beta&t=acw4Q6cplbF8ZouU3BKngxLyj92XRrxaH26k3IbIpFE'
-				alt=''
-				className='w-[200px] h-[200px] object-cover rounded-full shadow-lg  border-2 border-white/10'
-			/>
 		</div>
 	)
 }
