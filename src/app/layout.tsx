@@ -16,13 +16,6 @@ export const metadata: Metadata = {
 	icons: {
 		icon: '/favicon.ico',
 	},
-	openGraph: {
-		images: [
-			{
-				url: '/header_image.jpeg',
-			},
-		],
-	},
 }
 
 export default function RootLayout({

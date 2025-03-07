@@ -19,6 +19,13 @@ function HeroSection() {
 				{siteSettings.coverDescription}
 			</p>
 			<ContactBlocks />
+			<div className='flex flex-col items-center justify-center space-y-2'>
+				<img
+					src='/header_image.jpeg'
+					alt='Fahad Iqbal'
+					className='w-[100px] h-[100px] object-cover rounded-lg shadow-2xl'
+				/>
+			</div>
 		</div>
 	)
 }
