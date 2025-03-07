@@ -26,6 +26,17 @@ Any team would be lucky to have him!`
 Fahad is a very honest, thorough, capable and experienced software engineer that seeks continuous development to adapt to emerging technologies, delivering optimal outcomes.`
     },
     {
+        image: 'https://media.licdn.com/dms/image/v2/D5603AQGgb05HIRvFZg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1693597325448?e=1746662400&v=beta&t=rk69HsMbZ99WhER2uQEhxnrv3Y8G9toLVyGoroRcRc0',
+        name: 'Atul Kumar Singh',
+        designation: 'Digital Marketing | SEO-Savvy Blogger',
+        recommendation: `Working with Fahad is a great experience. He is humble and highly skilled.
+At International Salon Supplies, he has built seamless integrations with ERP systems, developed a CMS for inventory and product management, and created a solid eCommerce infrastructure and website, which is one of the company’s biggest projects.
+
+He consistently picks up new skills quickly. During our eCommerce project, he handled the implementation of technical SEO in the project, working alongside me and an SEO agency. He also set up Google Tag Manager, helped configure Google Analytics 4, and integrated our email marketing tool, making sure everything worked smoothly. This is just one example of his broad skill set. His ability to manage multiple complex projects at once and deliver strong results sets him apart.
+
+Outside of work, he has also been a huge help in deploying my Next.js project, WowPerth, and always takes the time to guide me whenever I need support. He is a strong team player and someone who truly owns his work.`
+    },
+    {
         image: 'https://media.licdn.com/dms/image/v2/C4E03AQFJCygtStOmiA/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1624510867456?e=1746662400&v=beta&t=3LHz5Pf-4Dd3md2meEOVlpXViEJQxu7c46t1x1JZBTk',
         name: 'Anudeep Varma',
         designation: 'Senior Manager at Deloitte Australia',
