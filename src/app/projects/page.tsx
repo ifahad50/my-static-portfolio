@@ -1,32 +1,13 @@
-'use client'
-import Project from "@/components/Project"
-import ProjectsSection from "@/components/ProjectsSection"
-import { useSearchParams } from "next/navigation"
-import { Suspense, useEffect } from "react"
-import Loader from "../loading"
+import type { Metadata } from 'next'
+import ProjectsComponent from '@/components/ProjectsComponent'
 
-
-function ProjectsComponent() {
-	const searchParams = useSearchParams()
-	const slug = searchParams.get('slug')
-
-	useEffect(() => {
-		//navigate to top
-		window.scrollTo(0, 0)
-	}, [slug])
-
-	if (slug) {
-		return <Project slug={slug} />
-	}
-
-	return <ProjectsSection />
+export const metadata: Metadata = {
+	title: 'Projects',
+	openGraph: {
+		images: ['/header_image.jpeg'],
+	},
 }
 
 export default function Page() {
-	return (
-		<Suspense fallback={<Loader />}>
-			<ProjectsComponent />
-		</Suspense>
-	);
+	return <ProjectsComponent />
 }
-

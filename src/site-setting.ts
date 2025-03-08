@@ -1,4 +1,5 @@
 const siteSettings = {
+	author: 'Fahad Iqbal',
 	mainTitle: 'Hi, I am Fahad Iqbal',
 	position: 'Full-Stack Developer',
 	coverDescription: `with 5+ years of experience in designing,

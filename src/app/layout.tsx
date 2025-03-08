@@ -13,9 +13,13 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
 	title: 'Fahad Iqbal',
 	description: `Hi, I am a ${siteSettings.position}`,
-	icons: {
-		icon: '/favicon.ico',
+	authors: [{ name: 'Fahad Iqbal' }],
+	creator: 'Fahad Iqbal',
+	publisher: 'Fahad Iqbal',
+	openGraph: {
+		images: '/header_image.jpeg',
 	},
+	metadataBase: new URL('https://fahadiqbal.dev'),
 }
 
 export default function RootLayout({
