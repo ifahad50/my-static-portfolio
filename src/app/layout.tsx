@@ -7,8 +7,9 @@ import ParticlesBackground from '@/components/ParticlesBackground'
 import siteSettings from '@/site-setting'
 
 const montserrat = Montserrat({
-	weight: '400',
 	subsets: ['latin'],
+	weight: ['400', '700'],
+	display: 'swap',
 })
 export const metadata: Metadata = {
 	title: 'Fahad Iqbal',

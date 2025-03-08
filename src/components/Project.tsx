@@ -1,26 +1,17 @@
-import { FC, useEffect } from 'react'
-import { projects, ProjectType } from '@/projects-data'
-import NotFound from '@/app/not-found'
+'use client'
+import { ProjectType } from '@/projects-data'
 import Heading from './Heading'
 import SubHeading from './SubHeading'
 import Link from 'next/link'
 import PixelCard from './reactBits/components/PixelCard/PixelCard'
 import { FaArrowLeft } from 'react-icons/fa6'
+import { useEffect } from 'react'
 
-interface ProjectProps {
-	slug: string
-}
-
-const Project: FC<ProjectProps> = ({ slug }) => {
-	const project: ProjectType | undefined = projects.find(
-		(project: any) => project.slug === slug
-	)
-
-	if (!project) {
-		return <NotFound />
-	}
+const Project = ({ project }: { project: ProjectType }) => {
 	useEffect(() => {
-		document.title = project.title
+		if (document?.title) {
+			document.title = project.title
+		}
 	}, [project.title])
 	return (
 		<div className='flex flex-col items-start justify-center space-y-4 max-w-screen-xl mx-auto'>

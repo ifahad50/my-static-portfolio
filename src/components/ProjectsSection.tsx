@@ -1,3 +1,5 @@
+'use client'
+
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import SubHeading from './SubHeading'
 import PixelCard from './reactBits/components/PixelCard/PixelCard'
