@@ -42,4 +42,10 @@ Outside of work, he has also been a huge help in deploying my Next.js project, W
         designation: 'Senior Manager at Deloitte Australia',
         recommendation: `Fahad is an exceptional Oracle Technical Consultant with deep expertise in Oracle technologies. His patient and solution-oriented approach ensures even the most complex challenges are analyzed, troubleshot, and resolved effectively. His ability to explain technical concepts clearly and collaborate seamlessly makes him a valuable asset to any team. With a strong commitment to delivering quality solutions and supporting colleagues, Fahad consistently exceeds expectations. His expertise and professionalism make him highly recommended for any organization seeking a knowledgeable and reliable Oracle expert.`
     },
+    {
+        image: '/recommendations/david_zing.jpeg',
+        name: 'David Xing',
+        designation: 'IT Consultant | Deloitte T&T Oracle | Actuarial Science Graduate',
+        recommendation: `I had the pleasure of working with Fahad at Deloitte Consulting, and I can confidently say he is one of the most hardworking and capable professionals I’ve met. His technical expertise in IT is exceptional, and he consistently delivered high-quality results, even under tight deadlines. Beyond his skills, Fahad is a trusted and reliable team player who approaches every task with integrity and dedication. Any team would be lucky to have him.`
+    },
 ]
