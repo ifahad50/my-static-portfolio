@@ -48,4 +48,16 @@ Outside of work, he has also been a huge help in deploying my Next.js project, W
         designation: 'IT Consultant | Deloitte T&T Oracle | Actuarial Science Graduate',
         recommendation: `I had the pleasure of working with Fahad at Deloitte Consulting, and I can confidently say he is one of the most hardworking and capable professionals I’ve met. His technical expertise in IT is exceptional, and he consistently delivered high-quality results, even under tight deadlines. Beyond his skills, Fahad is a trusted and reliable team player who approaches every task with integrity and dedication. Any team would be lucky to have him.`
     },
+    {
+        image: '/recommendations/keith_yeung.jpeg',
+        name: 'Keith Yeung',
+        designation: 'Lead Specialist',
+        recommendation: `I worked with Fahad during oracle fusion implementation for Pilbara Port Authority. I am very impressed of his capability to learn new technology. He can pick up the new tools within a few months and understand the oracle database for all modules from finance, supply chain and human capital. I have never work with a person who can manage this kind of workload. Plus he can deliver the quality work for all technical work assigned to him. I am really glad to work with him together in that project. He is the person that you can trust.`
+    },
+    {
+        image: '/recommendations/ritish_rana.jpeg',
+        name: 'Ritish Rana',
+        designation: 'Engagement Manager',
+        recommendation: `I had the pleasure of working with Fahad, and his dedication to deadlines, creativity in problem-solving, and expertise in Oracle report creation truly set him apart. He consistently delivers high-quality work on time, finding innovative solutions to complex challenges. His strong work ethic and technical expertise make him an invaluable asset to any team. I highly recommend Fahad for his professionalism and commitment to excellence.`
+    },
 ]
