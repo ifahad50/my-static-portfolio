@@ -18,7 +18,7 @@ const siteSettings = {
 	},
 	workExperiences: [
 		{
-			title: 'Lead Software Engineer',
+			title: 'Senior Software Engineer',
 			company: 'International Salon Supplies',
 			period: 'Apr 2023 - Present',
 			description:
