@@ -12,7 +12,7 @@ const siteSettings = {
 					contribute to impactful projects, and advance professionally in the
 					field of full-stack development.`,
 	contact: {
-		gmail: 'mailto:fahad50dev@gmail.com',
+		gmail: 'mailto:ifahad50dev@gmail.com',
 		linkedin: 'https://www.linkedin.com/in/fahad-iqbal-a3299479',
 		cv: 'https://drive.google.com/drive/folders/1FLjy8GFxO0vsTLAkhsaK4vntQwgoWwx1?usp=sharing',
 	},
