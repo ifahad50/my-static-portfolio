@@ -10,7 +10,6 @@ function HeroSection() {
 	const heroRef     = useRef<HTMLDivElement | null>(null)
 	const moonWrapRef = useRef<HTMLDivElement | null>(null)
 
-	// Text element refs for staggered entrance
 	const tagRef  = useRef<HTMLDivElement | null>(null)
 	const nameRef = useRef<HTMLDivElement | null>(null)
 	const roleRef = useRef<HTMLDivElement | null>(null)
@@ -19,7 +18,7 @@ function HeroSection() {
 	const codeRef = useRef<HTMLDivElement | null>(null)
 	const ctaRef  = useRef<HTMLDivElement | null>(null)
 
-	// Entrance animation
+	// Staggered entrance for text elements
 	useEffect(() => {
 		const els = [tagRef, nameRef, roleRef, divRef, descRef, codeRef, ctaRef]
 			.map(r => r.current).filter(Boolean) as HTMLElement[]
@@ -31,68 +30,69 @@ function HeroSection() {
 		return () => { animeRemove(els) }
 	}, [])
 
-	// Scroll parallax: moon follows at ~32 % of scroll speed so it lags
-	// behind the page and feels like it's floating in a different depth plane.
+	// Scroll parallax — desktop only.
+	// On mobile the photo is in normal document flow (stacked above text),
+	// so no transform is applied and no parallax runs.
 	useEffect(() => {
 		const wrap = moonWrapRef.current
 		if (!wrap) return
 		let raf: number | null = null
-		let baseTranslate = '-50%' // desktop: vertically centered
 
-		const setBase = () => {
-			baseTranslate = window.innerWidth >= 768 ? '-50%' : '0%'
+		const isMd = () => window.innerWidth >= 768
+
+		// When resizing to mobile clear any desktop transform that was set
+		const onResize = () => {
+			if (!isMd()) wrap.style.transform = ''
 		}
-		setBase()
-		window.addEventListener('resize', setBase)
+		window.addEventListener('resize', onResize)
 
 		const tick = () => {
 			raf = null
-			const offset = window.scrollY * 0.32
-			wrap.style.transform = `translateY(calc(${baseTranslate} + ${offset}px))`
+			if (!isMd()) return
+			wrap.style.transform = `translateY(calc(-50% + ${window.scrollY * 0.32}px))`
 		}
 		const onScroll = () => { if (!raf) raf = requestAnimationFrame(tick) }
 		window.addEventListener('scroll', onScroll, { passive: true })
 
+		// Set initial desktop centering without waiting for a scroll event
+		if (isMd()) wrap.style.transform = 'translateY(-50%)'
+
 		return () => {
 			window.removeEventListener('scroll', onScroll)
-			window.removeEventListener('resize', setBase)
+			window.removeEventListener('resize', onResize)
 			if (raf) cancelAnimationFrame(raf)
 		}
 	}, [])
 
 	return (
-		<div
-			ref={heroRef}
-			className='relative min-h-screen overflow-visible'
-		>
-			{/* ── MOON (always absolute, behind content) ───── */}
-			{/*  Mobile:   centered in hero, acts as background  */}
-			{/*  Desktop:  anchored to right half, parallaxed    */}
+		// flex-col on mobile (photo stacked above text)
+		// block on md+ (photo re-enters absolute flow on the right)
+		<div ref={heroRef} className='flex flex-col md:block relative min-h-screen'>
+
+			{/* ── PHOTO CARD ──────────────────────────────────────────
+			    Mobile  : in normal flow, centred above the text block
+			    Desktop : absolute right side, parallaxed by the effect above
+			──────────────────────────────────────────────────────── */}
 			<div
 				ref={moonWrapRef}
 				className='
-					pointer-events-none absolute z-0
-					top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-					md:left-auto md:translate-x-0 md:right-[-2%]
+					flex justify-center items-center
+					pt-8 pb-6
+					md:pt-0 md:pb-0
+					md:absolute md:top-1/2 md:right-[-2%]
+					md:pointer-events-none md:z-0
 				'
 				style={{ willChange: 'transform' }}
 			>
 				<MoonBreakCompile />
 			</div>
 
-			{/* Gradient veil between moon and text on mobile */}
-			<div className='absolute inset-0 z-[1] md:hidden pointer-events-none'
-				style={{ background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.55) 30%, rgba(0,0,0,0.15) 70%, transparent 100%)' }}
-			/>
-
-			{/* ── TEXT CONTENT ──────────────────────────────── */}
+			{/* ── TEXT CONTENT ──────────────────────────────────────── */}
 			<div className='
-				relative z-10
 				flex flex-col gap-6 md:gap-7
-				min-h-screen justify-center
 				w-full md:max-w-[52%]
-				pt-8 pb-16 md:py-0
-				px-0
+				pb-16 md:min-h-screen md:justify-center md:py-0
+				relative z-10
 			'>
 				{/* Terminal breadcrumb */}
 				<div ref={tagRef} className='flex items-center gap-1.5 font-mono text-[11px] select-none text-white/28'>
@@ -101,11 +101,11 @@ function HeroSection() {
 					<span className='text-white/45'>whoami</span>
 				</div>
 
-				{/* Name – large, tight */}
+				{/* Name */}
 				<div ref={nameRef}>
 					<h1
 						className='font-extrabold tracking-tighter leading-[0.88] text-white'
-						style={{ fontSize: 'clamp(2.8rem, 7.5vw, 5.5rem)' }}
+						style={{ fontSize: 'clamp(2.6rem, 7.5vw, 5.5rem)' }}
 					>
 						Fahad<br />
 						<span className='text-white/28'>Iqbal</span>
@@ -133,7 +133,7 @@ function HeroSection() {
 					<span className='text-white/82 font-medium'>International Salon Supplies</span>.
 				</p>
 
-				{/* Inline code block – tech stack as code */}
+				{/* Code block */}
 				<div
 					ref={codeRef}
 					className='font-mono text-[11px] md:text-xs bg-white/[0.022] border border-white/[0.055] rounded-lg px-4 py-3.5 space-y-[3px] max-w-[22rem]'
