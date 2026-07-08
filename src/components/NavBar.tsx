@@ -1,6 +1,6 @@
 'use client'
 
-import { GanttChart, Home, Phone } from 'lucide-react'
+import { GanttChart, Home, Phone, BookOpen } from 'lucide-react'
 import Dock from './reactBits/components/Dock/Dock'
 import siteSettings from '@/site-setting'
 
@@ -14,6 +14,11 @@ const menuItems = [
 		icon: <GanttChart />,
 		label: 'Projects',
 		link: '/projects',
+	},
+	{
+		icon: <BookOpen />,
+		label: 'Blog',
+		link: '/blog',
 	},
 	{
 		icon: <Phone />,

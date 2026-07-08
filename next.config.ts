@@ -1,8 +1,8 @@
 import type { NextConfig } from 'next'
+import { PHASE_PRODUCTION_BUILD } from 'next/constants'
 
-const nextConfig: NextConfig = {
-	/* config options here */
-	output: 'export',
+const nextConfig = (phase: string): NextConfig => ({
+	output: phase === PHASE_PRODUCTION_BUILD ? 'export' : undefined,
 	images: {
 		unoptimized: true,
 	},
@@ -10,6 +10,6 @@ const nextConfig: NextConfig = {
 	typescript: {
 		ignoreBuildErrors: true,
 	},
-}
+})
 
 export default nextConfig

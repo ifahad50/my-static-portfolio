@@ -1,5 +1,6 @@
 'use client'
-import { ProjectType } from '@/projects-data'
+import type { ProjectType } from '@/types/project'
+import type { ReactNode } from 'react'
 import Heading from './Heading'
 import SubHeading from './SubHeading'
 import Link from 'next/link'
@@ -7,7 +8,7 @@ import PixelCard from './reactBits/components/PixelCard/PixelCard'
 import { FaArrowLeft } from 'react-icons/fa6'
 import { useEffect } from 'react'
 
-const Project = ({ project }: { project: ProjectType }) => {
+const Project = ({ project, contentNode }: { project: ProjectType; contentNode?: ReactNode }) => {
 	useEffect(() => {
 		if (document?.title) {
 			document.title = project.title
@@ -24,16 +25,14 @@ const Project = ({ project }: { project: ProjectType }) => {
 				className='w-full mx-auto h-auto max-h-[600px] rounded-lg object-cover'
 			/>
 			<SubHeading text='Tech Stack' />
-			<div className='flex flex-col items-start justify-center '>
+			<div className='flex flex-col items-start justify-center'>
 				<div className='w-full flex flex-wrap items-center justify-start gap-2'>
 					{project.technologiesUsed.map((technology: string, index: number) => (
 						<div
 							key={`${index}-${technology}`}
-							className=' bg-white/10 backdrop-blur-lg rounded-lg p-2 md:p-4'
+							className='bg-white/10 backdrop-blur-lg rounded-lg p-2 md:p-4'
 						>
-							<span className='text-xs md:text-sm text-primary'>
-								{technology}
-							</span>
+							<span className='text-xs md:text-sm text-primary'>{technology}</span>
 						</div>
 					))}
 				</div>
@@ -42,13 +41,14 @@ const Project = ({ project }: { project: ProjectType }) => {
 			<div className='w-full bg-white/10 backdrop-blur-lg rounded-lg p-2 md:p-4'>
 				<p className='text-sm md:text-lg'>{project.headerDescription}</p>
 			</div>
-			<SubHeading text='Details' />
-			<div className='w-full bg-white/10 backdrop-blur-lg rounded-lg p-2 md:p-4'>
-				<div
-					className='prose prose-invert text-sm md:text-lg'
-					dangerouslySetInnerHTML={{ __html: project.content }}
-				/>
-			</div>
+			{contentNode && (
+				<>
+					<SubHeading text='Details' />
+					<div className='w-full bg-white/10 backdrop-blur-lg rounded-lg p-2 md:p-4'>
+						<div className='prose prose-invert text-sm md:text-lg'>{contentNode}</div>
+					</div>
+				</>
+			)}
 			<BackToProjects />
 		</div>
 	)
@@ -56,10 +56,7 @@ const Project = ({ project }: { project: ProjectType }) => {
 
 function BackToProjects() {
 	return (
-		<Link
-			href={{ pathname: `/projects` }}
-			className='flex flex-row items-center justify-center gap-2'
-		>
+		<Link href='/projects' className='flex flex-row items-center justify-center gap-2'>
 			<PixelCard className='max-h-10 max-w-10 rounded-full'>
 				<FaArrowLeft className='absolute' />
 			</PixelCard>

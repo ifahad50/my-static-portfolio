@@ -1,12 +1,14 @@
 'use client'
+
 import HeroSection from '@/components/HeroSection'
-// import ProjectsSection from '@/components/ProjectsSection'
+import ProjectsSection from '@/components/ProjectsSection'
 import RecommendationsSection from '@/components/RecommendationsSection'
 import SkillsSection from '@/components/SkillsSection'
 import WorkExperienceSection from '@/components/WorkExperienceSection'
 import { useEffect, useState } from 'react'
+import type { ProjectType } from '@/types/project'
 
-export default function Home() {
+export default function HomeContent({ projects }: { projects: ProjectType[] }) {
 	const [isBottom, setIsBottom] = useState(false)
 
 	useEffect(() => {
@@ -27,7 +29,7 @@ export default function Home() {
 				<RecommendationsSection />
 				<SkillsSection />
 				<WorkExperienceSection />
-				{/* <ProjectsSection /> */}
+				<ProjectsSection projects={projects} />
 			</div>
 			<div
 				className='fixed -bottom-7 left-0 w-full z-40'
