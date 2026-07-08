@@ -1,14 +1,36 @@
 'use client'
+
 import { recommendations, RecommendationType } from '@/recommendation-data'
 import SubHeading from './SubHeading'
 import { ScrollArea } from './ui/scroll-area'
 import GalaxyCard from './GalaxyCard'
+import { FaQuoteLeft } from 'react-icons/fa6'
+
+export function RecommendationCard({ recommendation }: { recommendation: RecommendationType }) {
+	return (
+		<GalaxyCard className='flex flex-col gap-3 p-4 md:p-5 w-full mb-3'>
+			<FaQuoteLeft className='text-white/20 text-lg shrink-0' />
+			<p className='text-sm text-white/65 leading-relaxed italic'>{recommendation.recommendation}</p>
+			<div className='flex items-center gap-3 pt-1 border-t border-white/[0.06]'>
+				<img
+					className='w-10 h-10 object-cover rounded-full border border-white/15'
+					src={recommendation.image}
+					alt={recommendation.name}
+				/>
+				<div>
+					<p className='text-sm font-semibold text-white'>{recommendation.name}</p>
+					<p className='text-[11px] text-white/40 leading-tight'>{recommendation.designation}</p>
+				</div>
+			</div>
+		</GalaxyCard>
+	)
+}
 
 function RecommendationsSection() {
 	return (
-		<div className='flex flex-col items-center justify-center space-y-4'>
+		<div className='flex flex-col items-center justify-center'>
 			<SubHeading text='Recommendations' />
-			<ScrollArea className='flex flex-col  max-w-4xl max-h-[600px] rounded-lg'>
+			<ScrollArea className='w-full max-w-3xl max-h-[560px] rounded-xl pr-1'>
 				{recommendations.map((rec, i) => (
 					<RecommendationCard key={`${i}-${rec.name}`} recommendation={rec} />
 				))}
@@ -17,31 +39,4 @@ function RecommendationsSection() {
 	)
 }
 
-export function RecommendationCard({
-	recommendation,
-}: {
-	recommendation: RecommendationType
-}) {
-	return (
-		<GalaxyCard className='flex flex-col gap-2 items-start p-4 w-full mb-4'>
-			<div className='flex flex-row gap-2 items-center'>
-				<img
-					className='w-[100px] h-[100px] object-cover rounded-lg shadow-2xl'
-					src={recommendation.image}
-					alt={recommendation.name}
-				/>
-				<div className='flex flex-col '>
-					<h3 className='text-lg font-bold '>{recommendation.name}</h3>
-
-					<p className='text-xs text-white/50 text-wrap'>
-						{recommendation.designation}
-					</p>
-				</div>
-			</div>
-			<p className='text-sm text-primary text-wrap'>
-				{recommendation.recommendation}
-			</p>
-		</GalaxyCard>
-	)
-}
 export default RecommendationsSection

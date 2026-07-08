@@ -1,12 +1,20 @@
 import type { Metadata } from 'next'
-import { Montserrat } from 'next/font/google'
+import { Montserrat, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import siteSettings from '@/site-setting'
 
 const montserrat = Montserrat({
 	subsets: ['latin'],
-	weight: ['400', '700'],
+	weight: ['400', '500', '600', '700', '800'],
 	display: 'swap',
+	variable: '--font-sans',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+	subsets: ['latin'],
+	weight: ['400', '500', '700'],
+	display: 'swap',
+	variable: '--font-mono',
 })
 
 export const metadata: Metadata = {
@@ -24,7 +32,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang='en'>
-			<body className={montserrat.className}>{children}</body>
+			<body className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans antialiased`}>{children}</body>
 		</html>
 	)
 }
