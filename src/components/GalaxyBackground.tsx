@@ -1,21 +1,10 @@
 'use client'
 
-import { animate, createTimeline, remove as animeRemove, set as animeSet, stagger as animeStagger } from 'animejs'
+import { animate, remove as animeRemove, stagger as animeStagger } from 'animejs'
 import { useEffect, useRef, useState } from 'react'
 
-type Star = { x: number; y: number; size: number; opacity: number; delay: number }
+type Star    = { x: number; y: number; size: number }
 type Shooter = { x: number; y: number; angle: number; length: number; delay: number }
-
-const anime: any = Object.assign(
-	(p: any, q?: any) => {
-		if (q === undefined && p && typeof p === 'object' && 'targets' in p) {
-			const { targets, ...rest } = p
-			return animate(targets, rest)
-		}
-		return animate(p, q)
-	},
-	{ timeline: createTimeline, remove: animeRemove, set: animeSet, stagger: animeStagger }
-)
 
 function usePrefersReducedMotion() {
 	const [r, setR] = useState(false)
@@ -30,41 +19,40 @@ function usePrefersReducedMotion() {
 	return r
 }
 
-export default function GalaxyBackground() {
-	const reducedMotion = usePrefersReducedMotion()
-	const nebulaARef = useRef<HTMLDivElement | null>(null)
-	const nebulaBRef = useRef<HTMLDivElement | null>(null)
-	const nebulaCRef = useRef<HTMLDivElement | null>(null)
-	const starElsRef = useRef<(HTMLDivElement | null)[]>([])
-	const shooterElsRef = useRef<(HTMLDivElement | null)[]>([])
-	const [stars, setStars] = useState<Star[]>([])
-	const [shooters] = useState<Shooter[]>(() =>
-		Array.from({ length: 6 }, (_, i) => ({
-			x: 10 + i * 15,
-			y: 5 + (i % 3) * 8,
-			angle: 35 + (i % 2) * 10,
-			length: 80 + (i % 3) * 60,
-			delay: i * 3200,
-		}))
-	)
+// Stable shooter list — fixed positions, no randomness so they never regenerate
+const SHOOTERS: Shooter[] = Array.from({ length: 6 }, (_, i) => ({
+	x: 10 + i * 15,
+	y: 5 + (i % 3) * 8,
+	angle: 35 + (i % 2) * 10,
+	length: 80 + (i % 3) * 60,
+	delay: i * 3200,
+}))
 
+export default function GalaxyBackground() {
+	const reducedMotion  = usePrefersReducedMotion()
+	const nebulaARef     = useRef<HTMLDivElement | null>(null)
+	const nebulaBRef     = useRef<HTMLDivElement | null>(null)
+	const nebulaCRef     = useRef<HTMLDivElement | null>(null)
+	const starElsRef     = useRef<(HTMLDivElement | null)[]>([])
+	const shooterElsRef  = useRef<(HTMLDivElement | null)[]>([])
+	const [stars, setStars] = useState<Star[]>([])
+
+	// Generate stars once on mount; regenerate on resize
 	useEffect(() => {
 		if (typeof window === 'undefined') return
 		const build = () => {
 			const w = window.innerWidth
 			const h = window.innerHeight
-			const count = Math.round(Math.min(500, Math.max(180, (w * h) / 6000)))
+			const count = Math.round(Math.min(450, Math.max(160, (w * h) / 6500)))
 			const next: Star[] = []
 			for (let i = 0; i < count; i++) {
 				const nx = (Math.random() * 2 - 1) * (w / 2)
 				const ny = (Math.random() * 2 - 1) * (h / 2)
 				const bias = 0.25 + Math.random() * 0.75
 				next.push({
-					x: w / 2 + nx * bias,
-					y: h / 2 + ny * bias,
+					x:    w / 2 + nx * bias,
+					y:    h / 2 + ny * bias,
 					size: Math.random() < 0.8 ? 1 : Math.random() < 0.5 ? 2 : 3,
-					opacity: 0.15 + Math.random() * 0.8,
-					delay: Math.random() * 1200,
 				})
 			}
 			setStars(next)
@@ -74,47 +62,67 @@ export default function GalaxyBackground() {
 		return () => window.removeEventListener('resize', build)
 	}, [])
 
+	// ── Nebula animation — isolated from star state so it never gets interrupted ──
 	useEffect(() => {
 		if (reducedMotion) return
-
 		const layers = [
-			{ el: nebulaARef.current, tx: ['-3%', '3%'] as [string,string], ty: ['-2%', '2%'] as [string,string], op: [0.3, 0.6] as [number,number], dur: 8000 },
-			{ el: nebulaBRef.current, tx: ['4%', '-4%'] as [string,string], ty: ['1%', '-2%'] as [string,string], op: [0.15, 0.45] as [number,number], dur: 10500 },
-			{ el: nebulaCRef.current, tx: ['-1%', '2%'] as [string,string], ty: ['3%', '-3%'] as [string,string], op: [0.1, 0.35] as [number,number], dur: 12000 },
-		].filter(l => l.el) as Array<{ el: HTMLDivElement; tx: [string,string]; ty: [string,string]; op: [number,number]; dur: number }>
-
-		const starTargets = starElsRef.current.filter(Boolean) as HTMLDivElement[]
+			{ el: nebulaARef.current, tx: ['-3%', '3%'] as [string,string],  ty: ['-2%', '2%'] as [string,string],  op: [0.3, 0.6]  as [number,number], dur: 8000  },
+			{ el: nebulaBRef.current, tx: ['4%', '-4%'] as [string,string],   ty: ['1%', '-2%'] as [string,string],  op: [0.15, 0.45] as [number,number], dur: 10500 },
+			{ el: nebulaCRef.current, tx: ['-1%', '2%'] as [string,string],   ty: ['3%', '-3%'] as [string,string],  op: [0.1, 0.35] as [number,number], dur: 12000 },
+		].filter(l => l.el != null) as Array<{ el: HTMLDivElement; tx: [string,string]; ty: [string,string]; op: [number,number]; dur: number }>
 		if (!layers.length) return
 
 		const anims = layers.map(l =>
-			anime({ targets: l.el, translateX: l.tx, translateY: l.ty, opacity: l.op, duration: l.dur, easing: 'easeInOutSine', loop: true, direction: 'alternate' })
+			animate(l.el, {
+				translateX: l.tx, translateY: l.ty, opacity: l.op,
+				duration: l.dur, easing: 'easeInOutSine', loop: true, direction: 'alternate',
+			})
 		)
+		return () => {
+			anims.forEach(a => a?.pause?.())
+			animeRemove(layers.map(l => l.el))
+		}
+	}, [reducedMotion])
 
+	// ── Star + shooter animations — run once stars are populated ──
+	useEffect(() => {
+		if (reducedMotion || !stars.length) return
+
+		const starTargets    = starElsRef.current.filter(Boolean) as HTMLDivElement[]
+		const shooterTargets = shooterElsRef.current.filter(Boolean) as HTMLDivElement[]
+
+		// Twinkle: gentle opacity oscillation, direction: 'alternate' avoids snap-back
+		// Stagger spreads the start times so stars don't all pulse in sync
 		if (starTargets.length) {
-			anime({ targets: starTargets, opacity: [0.08, 1], scale: [0.7, 1.8], duration: 2500, delay: (_: unknown, i: number) => 8 + i * 10, loop: true, easing: 'easeInOutSine' })
+			animate(starTargets, {
+				opacity:   [0.06, 0.95],
+				duration:  3200,
+				delay:     animeStagger(6, { from: 'random' }),
+				loop:      true,
+				direction: 'alternate',
+				easing:    'easeInOutSine',
+			})
 		}
 
-		const shooterTargets = shooterElsRef.current.filter(Boolean) as HTMLDivElement[]
+		// Shooting stars — stagger replaces the function callback that caused TS errors
 		if (shooterTargets.length) {
-			anime({
-				targets: shooterTargets,
+			animate(shooterTargets, {
 				translateX: [0, 300],
 				translateY: [0, 180],
-				opacity: [{ value: [0, 0.7], duration: 200 }, { value: 0, duration: 400, delay: 200 }],
-				duration: 800,
-				delay: (_: unknown, i: number) => shooters[i]?.delay ?? i * 3000,
-				loop: true,
-				easing: 'easeOutQuad',
+				opacity:    [{ value: [0, 0.7], duration: 200 }, { value: 0, duration: 400, delay: 200 }],
+				duration:   800,
+				delay:      animeStagger(3200),
+				loop:       true,
+				easing:     'easeOutQuad',
 			})
 		}
 
 		return () => {
-			anims.forEach(a => a?.pause?.())
-			anime.remove(layers.map(l => l.el))
-			anime.remove(starTargets)
-			anime.remove(shooterTargets)
+			animeRemove(starTargets)
+			animeRemove(shooterTargets)
 		}
-	}, [reducedMotion, stars.length, shooters])
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [reducedMotion, stars.length > 0])
 
 	return (
 		<div className='fixed inset-0 -z-10 overflow-hidden pointer-events-none' aria-hidden='true'>
@@ -143,16 +151,16 @@ export default function GalaxyBackground() {
 			/>
 
 			{/* Shooting stars */}
-			{shooters.map((s, i) => (
+			{SHOOTERS.map((s, i) => (
 				<div
 					key={i}
 					ref={el => { shooterElsRef.current[i] = el }}
 					className='absolute opacity-0'
 					style={{
-						left: `${s.x}%`,
-						top: `${s.y}%`,
-						width: s.length,
-						height: 1,
+						left:      `${s.x}%`,
+						top:       `${s.y}%`,
+						width:     s.length,
+						height:    1,
 						transform: `rotate(${s.angle}deg)`,
 						background: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.4) 80%, rgba(255,255,255,0) 100%)',
 						borderRadius: 4,
@@ -168,11 +176,11 @@ export default function GalaxyBackground() {
 						ref={el => { starElsRef.current[i] = el }}
 						className='absolute rounded-full bg-white'
 						style={{
-							left: s.x,
-							top: s.y,
-							width: s.size,
-							height: s.size,
-							opacity: s.opacity,
+							left:      s.x,
+							top:       s.y,
+							width:     s.size,
+							height:    s.size,
+							opacity:   0.06, // matches animation FROM value — no jump when anime.js takes over
 							transform: 'translate(-50%, -50%)',
 						}}
 					/>
@@ -184,7 +192,7 @@ export default function GalaxyBackground() {
 				className='absolute inset-0 opacity-[0.018]'
 				style={{
 					backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-					backgroundSize: '80px 80px',
+					backgroundSize:  '80px 80px',
 				}}
 			/>
 

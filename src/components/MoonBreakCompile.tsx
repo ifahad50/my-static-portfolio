@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, type RefObject, type CSSProperties } from 'react'
+import { useEffect, useLayoutEffect, useRef, type RefObject, type CSSProperties } from 'react'
 import Image from 'next/image'
 import { animate, remove as animeRemove } from 'animejs'
 
@@ -14,15 +14,24 @@ export default function MoonBreakCompile({ heroRef: _heroRef }: { heroRef?: RefO
 	const blRef    = useRef<HTMLDivElement | null>(null)
 	const brRef    = useRef<HTMLDivElement | null>(null)
 
+	// Set invisible BEFORE first paint so there's no flash, and do it imperatively
+	// so React can't re-apply it on re-renders (unlike a JSX style prop).
+	useLayoutEffect(() => {
+		const el = floatRef.current
+		if (el) el.style.opacity = '0'
+		;[tlRef, trRef, blRef, brRef].forEach(r => {
+			if (r.current) r.current.style.opacity = '0'
+		})
+	}, [])
+
 	useEffect(() => {
 		const el = floatRef.current
 		if (!el) return
-		if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-		el.style.opacity = '0'
+		// Entrance only — scale + fade, no position movement so card never overflows
 		animate(el, {
 			opacity:  [0, 1],
-			scale:    [0.93, 1],
+			scale:    [0.94, 1],
 			duration: 1000,
 			delay:    350,
 			easing:   'easeOutCubic',
@@ -47,33 +56,22 @@ export default function MoonBreakCompile({ heroRef: _heroRef }: { heroRef?: RefO
 			})
 		})
 
-		// Perpetual float — starts after entrance settles
-		const floatAnim = animate(el, {
-			translateY: [-7, 7],
-			duration:   5000,
-			easing:     'easeInOutSine',
-			loop:       true,
-			direction:  'alternate',
-			delay:      1400,
-		})
-
-		return () => {
-			animeRemove(el)
-			floatAnim?.pause?.()
-		}
+		return () => { animeRemove(el) }
 	}, [])
 
 	const bracketBase: CSSProperties = {
 		position: 'absolute',
 		width:    B,
 		height:   B,
-		opacity:  0,
+		// opacity intentionally NOT here — set imperatively in useLayoutEffect
+		// so React re-renders cannot override anime.js's animated value
 		zIndex:   10,
 	}
 	const bColor = `${T}px solid rgba(255,255,255,0.72)`
 
 	return (
-		<div ref={floatRef} className='relative select-none pointer-events-none' style={{ opacity: 0 }}>
+		// No style={{ opacity }} here — managed imperatively to survive re-renders
+		<div ref={floatRef} className='relative select-none pointer-events-none'>
 
 			{/* Ambient glow behind frame */}
 			<div
@@ -86,47 +84,13 @@ export default function MoonBreakCompile({ heroRef: _heroRef }: { heroRef?: RefO
 				}}
 			/>
 
-			{/* Slow-rotating outer dashed border */}
-			<div
-				aria-hidden='true'
-				className='absolute pointer-events-none'
-				style={{
-					inset:     '-16px',
-					border:    '1px dashed rgba(255,255,255,0.08)',
-					animation: 'hud-spin 36s linear infinite',
-				}}
-			/>
-
-			{/* Side labels — visible only on md+ so they don't overflow mobile */}
-			<div className='hidden md:flex absolute left-0 -translate-x-full pr-4 top-0 bottom-0 flex-col justify-evenly items-end select-none'>
-				{['NEXT.JS', 'REACT', 'NODE.JS'].map(t => (
-					<span
-						key={t}
-						className='font-mono text-[8px] text-white/18 tracking-[0.18em] uppercase'
-						style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-					>{t}</span>
-				))}
-			</div>
-			<div className='hidden md:flex absolute right-0 translate-x-full pl-4 top-0 bottom-0 flex-col justify-evenly items-start select-none'>
-				{['DOCKER', 'AWS', 'TS'].map(t => (
-					<span
-						key={t}
-						className='font-mono text-[8px] text-white/18 tracking-[0.18em] uppercase'
-						style={{ writingMode: 'vertical-rl' }}
-					>{t}</span>
-				))}
-			</div>
-
 			{/* Frame + bracket container */}
 			<div className='relative'>
 
-				{/* Top-Left bracket */}
-				<div ref={tlRef} aria-hidden='true' style={{ ...bracketBase, top: -6, left: -6, borderTop: bColor, borderLeft: bColor }} />
-				{/* Top-Right bracket */}
-				<div ref={trRef} aria-hidden='true' style={{ ...bracketBase, top: -6, right: -6, borderTop: bColor, borderRight: bColor }} />
-				{/* Bottom-Left bracket */}
-				<div ref={blRef} aria-hidden='true' style={{ ...bracketBase, bottom: -6, left: -6, borderBottom: bColor, borderLeft: bColor }} />
-				{/* Bottom-Right bracket */}
+				{/* Corner brackets — opacity managed imperatively, NOT in style prop */}
+				<div ref={tlRef} aria-hidden='true' style={{ ...bracketBase, top: -6, left: -6,   borderTop: bColor,    borderLeft: bColor  }} />
+				<div ref={trRef} aria-hidden='true' style={{ ...bracketBase, top: -6, right: -6,  borderTop: bColor,    borderRight: bColor }} />
+				<div ref={blRef} aria-hidden='true' style={{ ...bracketBase, bottom: -6, left: -6,  borderBottom: bColor, borderLeft: bColor  }} />
 				<div ref={brRef} aria-hidden='true' style={{ ...bracketBase, bottom: -6, right: -6, borderBottom: bColor, borderRight: bColor }} />
 
 				{/* Top meta row */}
@@ -165,7 +129,7 @@ export default function MoonBreakCompile({ heroRef: _heroRef }: { heroRef?: RefO
 						}}
 					/>
 
-					{/* Bottom vignette — ensures info text is readable */}
+					{/* Bottom vignette */}
 					<div
 						aria-hidden='true'
 						className='absolute bottom-0 left-0 right-0 pointer-events-none'
@@ -191,7 +155,7 @@ export default function MoonBreakCompile({ heroRef: _heroRef }: { heroRef?: RefO
 					</div>
 				</div>
 
-				{/* Mid-point tick marks on the frame border edges */}
+				{/* Mid-point tick marks */}
 				<div aria-hidden='true' className='absolute top-0 left-1/2 -translate-x-1/2 bg-white/22' style={{ width: 1, height: 6 }} />
 				<div aria-hidden='true' className='absolute bottom-0 left-1/2 -translate-x-1/2 bg-white/22' style={{ width: 1, height: 6 }} />
 				<div aria-hidden='true' className='absolute left-0 top-1/2 -translate-y-1/2 bg-white/22' style={{ width: 6, height: 1 }} />
