@@ -43,6 +43,7 @@ import { DiRedis } from 'react-icons/di'
 import { IoLogoHtml5, IoLogoJavascript } from 'react-icons/io'
 import { LuBlocks } from 'react-icons/lu'
 import { GiBullseye, GiGrowth } from 'react-icons/gi'
+import GalaxyCard from './GalaxyCard'
 
 interface skillProp {
 	icon: React.ReactNode
@@ -250,12 +251,12 @@ function SkillsSection() {
 							<TooltipProvider key={`${idx}-skill-${skill.name}`}>
 								<Tooltip>
 									<TooltipTrigger asChild>
-										<div className='flex flex-col items-center justify-center gap-4 bg-white/10 backdrop-blur-lg rounded-lg w-24 md:w-36 p-2 md:p-4 cursor-pointer min-h-[6rem] md:min-h-[8rem]'>
+										<GalaxyCard className='flex flex-col items-center justify-center gap-4 w-24 md:w-36 p-2 md:p-4 cursor-pointer min-h-[6rem] md:min-h-[8rem]'>
 											{skill.icon}
 											<p className='text-wrap line-clamp-2 text-center text-xs md:text-sm '>
 												{skill.name}
 											</p>
-										</div>
+										</GalaxyCard>
 									</TooltipTrigger>
 									<TooltipContent>
 										<p>{skill.name}</p>

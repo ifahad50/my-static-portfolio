@@ -7,6 +7,7 @@ import Link from 'next/link'
 import PixelCard from './reactBits/components/PixelCard/PixelCard'
 import { FaArrowLeft } from 'react-icons/fa6'
 import { useEffect } from 'react'
+import GalaxyCard from './GalaxyCard'
 
 const Project = ({ project, contentNode }: { project: ProjectType; contentNode?: ReactNode }) => {
 	useEffect(() => {
@@ -28,25 +29,25 @@ const Project = ({ project, contentNode }: { project: ProjectType; contentNode?:
 			<div className='flex flex-col items-start justify-center'>
 				<div className='w-full flex flex-wrap items-center justify-start gap-2'>
 					{project.technologiesUsed.map((technology: string, index: number) => (
-						<div
+						<GalaxyCard
 							key={`${index}-${technology}`}
-							className='bg-white/10 backdrop-blur-lg rounded-lg p-2 md:p-4'
+							className='p-2 md:p-4 inline-flex items-center justify-center'
 						>
 							<span className='text-xs md:text-sm text-primary'>{technology}</span>
-						</div>
+						</GalaxyCard>
 					))}
 				</div>
 			</div>
 			<SubHeading text='Overview' />
-			<div className='w-full bg-white/10 backdrop-blur-lg rounded-lg p-2 md:p-4'>
+			<GalaxyCard className='w-full p-2 md:p-4'>
 				<p className='text-sm md:text-lg'>{project.headerDescription}</p>
-			</div>
+			</GalaxyCard>
 			{contentNode && (
 				<>
 					<SubHeading text='Details' />
-					<div className='w-full bg-white/10 backdrop-blur-lg rounded-lg p-2 md:p-4'>
+					<GalaxyCard className='w-full p-2 md:p-4'>
 						<div className='prose prose-invert text-sm md:text-lg'>{contentNode}</div>
-					</div>
+					</GalaxyCard>
 				</>
 			)}
 			<BackToProjects />

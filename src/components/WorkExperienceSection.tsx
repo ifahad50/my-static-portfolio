@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import siteSettings from '@/site-setting'
 import SubHeading from './SubHeading'
+import GalaxyCard from './GalaxyCard'
 
 function WorkExperienceSection() {
 	const [isMobile, setIsMobile] = useState(false)
@@ -33,7 +34,7 @@ function WorkExperienceSection() {
 							key={`work-experience-${index}`}
 							className='flex md:justify-center items-center'
 						>
-							<div
+							<GalaxyCard
 								className={`hidden space-y-2 md:block w-1/2 ${
 									index % 2 === 0 ? 'pr-8 text-right' : 'pr-8 opacity-0'
 								}`}
@@ -56,11 +57,11 @@ function WorkExperienceSection() {
 										</p>
 									</>
 								)}
-							</div>
+							</GalaxyCard>
 							<div className='absolute left-0 md:relative md:left-auto flex items-center justify-center'>
 								<div className='w-4 h-4 rounded-full bg-primary border-4 border-white'></div>
 							</div>
-							<div
+							<GalaxyCard
 								className={`pl-8 md:w-1/2 space-y-2 ${
 									index % 2 === 1 ? 'md:pl-8' : 'md:pl-8 md:opacity-0'
 								}`}
@@ -79,7 +80,7 @@ function WorkExperienceSection() {
 										<p className='mt-1'>{experience.techStack.join(' | ')}</p>
 									</>
 								)}
-							</div>
+							</GalaxyCard>
 						</div>
 					))}
 				</div>

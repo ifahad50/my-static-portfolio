@@ -5,6 +5,7 @@ import SubHeading from '@/components/SubHeading'
 import PixelCard from '@/components/reactBits/components/PixelCard/PixelCard'
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6'
 import { format } from 'date-fns'
+import GalaxyCard from '@/components/GalaxyCard'
 
 export const metadata: Metadata = {
 	title: 'Blog',
@@ -24,8 +25,8 @@ export default async function BlogPage() {
 					<p className='text-sm text-primary/80'>No posts yet. Add some in the Keystatic admin at /keystatic.</p>
 				) : (
 					posts.map((post) => (
-						<div
-							className='space-y-2 flex flex-col items-center gap-4 bg-white/10 backdrop-blur-lg rounded-lg w-full md:w-1/3 cursor-pointer min-h-[6rem] md:h-[35rem]'
+						<GalaxyCard
+							className='space-y-2 flex flex-col items-center gap-4 w-full md:w-1/3 cursor-pointer min-h-[6rem] md:h-[35rem]'
 							key={post.slug}
 						>
 							<Link className='w-full' href={`/blog/${post.slug}`}>
@@ -58,7 +59,7 @@ export default async function BlogPage() {
 									</PixelCard>
 								</Link>
 							</div>
-						</div>
+						</GalaxyCard>
 					))
 				)}
 			</div>

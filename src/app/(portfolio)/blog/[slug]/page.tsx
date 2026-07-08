@@ -8,6 +8,7 @@ import Heading from '@/components/Heading'
 import PixelCard from '@/components/reactBits/components/PixelCard/PixelCard'
 import { FaArrowLeft } from 'react-icons/fa6'
 import { format } from 'date-fns'
+import GalaxyCard from '@/components/GalaxyCard'
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -66,14 +67,14 @@ export default async function BlogPostPage({ params }: Props) {
 				/>
 			)}
 			{post.excerpt && (
-				<div className='w-full bg-white/10 backdrop-blur-lg rounded-lg p-2 md:p-4'>
+				<GalaxyCard className='w-full p-2 md:p-4'>
 					<p className='text-sm md:text-lg'>{post.excerpt}</p>
-				</div>
+				</GalaxyCard>
 			)}
 			{contentReact && (
-				<div className='w-full bg-white/10 backdrop-blur-lg rounded-lg p-2 md:p-4'>
+				<GalaxyCard className='w-full p-2 md:p-4'>
 					<div className='prose prose-invert text-sm md:text-lg'>{contentReact}</div>
-				</div>
+				</GalaxyCard>
 			)}
 			<Link href='/blog' className='flex flex-row items-center justify-center gap-2'>
 				<PixelCard className='max-h-10 max-w-10 rounded-full'>

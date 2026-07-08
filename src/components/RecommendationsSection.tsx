@@ -2,6 +2,7 @@
 import { recommendations, RecommendationType } from '@/recommendation-data'
 import SubHeading from './SubHeading'
 import { ScrollArea } from './ui/scroll-area'
+import GalaxyCard from './GalaxyCard'
 
 function RecommendationsSection() {
 	return (
@@ -22,7 +23,7 @@ export function RecommendationCard({
 	recommendation: RecommendationType
 }) {
 	return (
-		<div className='flex flex-col gap-2 items-start bg-white/10 backdrop-blur-lg rounded-lg p-4 w-full mb-4'>
+		<GalaxyCard className='flex flex-col gap-2 items-start p-4 w-full mb-4'>
 			<div className='flex flex-row gap-2 items-center'>
 				<img
 					className='w-[100px] h-[100px] object-cover rounded-lg shadow-2xl'
@@ -40,7 +41,7 @@ export function RecommendationCard({
 			<p className='text-sm text-primary text-wrap'>
 				{recommendation.recommendation}
 			</p>
-		</div>
+		</GalaxyCard>
 	)
 }
 export default RecommendationsSection

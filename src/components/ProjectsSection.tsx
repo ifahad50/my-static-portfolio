@@ -5,6 +5,7 @@ import SubHeading from './SubHeading'
 import PixelCard from './reactBits/components/PixelCard/PixelCard'
 import Link from 'next/link'
 import type { ProjectType } from '@/types/project'
+import GalaxyCard from './GalaxyCard'
 
 function ProjectsSection({ projects }: { projects: ProjectType[] }) {
 	return (
@@ -12,8 +13,8 @@ function ProjectsSection({ projects }: { projects: ProjectType[] }) {
 			<SubHeading text='Projects' />
 			<div className='flex flex-wrap gap-4 justify-center'>
 				{projects.map((project: ProjectType) => (
-					<div
-						className='space-y-2 flex flex-col items-center  gap-4 bg-white/10 backdrop-blur-lg rounded-lg w-full md:w-1/3 cursor-pointer min-h-[6rem] md:h-[35rem] '
+					<GalaxyCard
+						className='space-y-2 flex flex-col items-center gap-4 w-full md:w-1/3 cursor-pointer min-h-[6rem] md:h-[35rem]'
 						key={project.slug}
 					>
 						<Link className='w-full' href={`/projects/${project.slug}`}>
@@ -41,7 +42,7 @@ function ProjectsSection({ projects }: { projects: ProjectType[] }) {
 								</PixelCard>
 							</Link>
 						</div>
-					</div>
+					</GalaxyCard>
 				))}
 			</div>
 		</div>

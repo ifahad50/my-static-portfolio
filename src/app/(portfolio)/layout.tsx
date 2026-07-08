@@ -1,12 +1,12 @@
 import Footer from '@/components/Footer'
 import NavBar from '@/components/NavBar'
-import ParticlesBackground from '@/components/ParticlesBackground'
+import GalaxyBackground from '@/components/GalaxyBackground'
 
 export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
-			<ParticlesBackground />
-			<main className='mx-6'>{children}</main>
+			<GalaxyBackground />
+			<main className='max-w-7xl mx-auto px-6'>{children}</main>
 			<Footer />
 			<NavBar />
 		</>
