@@ -1,9 +1,24 @@
 import { config, fields, collection } from '@keystatic/core'
 
+const githubRepo =
+	process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_REPO ??
+	// Optional alternate env var name; safe to keep as non-public since this file is still bundled.
+	(process.env as unknown as { NEXT_PUBLIC_KEYSTATIC_REPO?: string }).NEXT_PUBLIC_KEYSTATIC_REPO ??
+	''
+
+const useGithubStorage = typeof githubRepo === 'string' && githubRepo.includes('/')
+
+const storage = useGithubStorage
+	? ({
+			kind: 'github',
+			// Keystatic expects a RepoConfig type (either `${owner}/${name}` or { owner, name }).
+			// We accept the `${owner}/${name}` string from env and cast accordingly.
+			repo: githubRepo as `${string}/${string}`,
+	  }) as const
+	: ({ kind: 'local' }) as const
+
 export default config({
-	storage: {
-		kind: 'local',
-	},
+	storage,
 	collections: {
 		projects: collection({
 			label: 'Projects',

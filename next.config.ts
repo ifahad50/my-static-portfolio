@@ -1,8 +1,9 @@
 import type { NextConfig } from 'next'
-import { PHASE_PRODUCTION_BUILD } from 'next/constants'
 
-const nextConfig = (phase: string): NextConfig => ({
-	output: phase === PHASE_PRODUCTION_BUILD ? 'export' : undefined,
+// Keystatic needs server-side route handlers (GET/POST) to function in production.
+// Removing `output: 'export'` ensures your `/api/keystatic/*` routes accept writes.
+const nextConfig = (): NextConfig => ({
+	output: undefined,
 	images: {
 		unoptimized: true,
 	},

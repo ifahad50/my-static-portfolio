@@ -1,11 +1,9 @@
 import { makeRouteHandler } from '@keystatic/next/route-handler'
 import config from '@/keystatic.config'
 
-// In dev (output: undefined) this route is fully dynamic — all Keystatic API calls work.
-// In production (output: 'export') the route is pre-rendered as static placeholders.
-export function generateStaticParams() {
-	return [{ params: ['tree'] }, { params: ['update'] }]
-}
+// Ensure this route is treated as a dynamic server endpoint.
+// If it's pre-rendered, POST requests during "create/edit" will fail with 405.
+export const dynamic = 'force-dynamic'
 
 const handler = makeRouteHandler({ config })
 
