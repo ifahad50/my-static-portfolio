@@ -91,7 +91,7 @@ function HeroSection() {
 				flex flex-col gap-6 md:gap-7
 				min-h-screen justify-center
 				w-full md:max-w-[52%]
-				pt-20 pb-28 md:py-0
+				pt-8 pb-16 md:py-0
 				px-0
 			'>
 				{/* Terminal breadcrumb */}

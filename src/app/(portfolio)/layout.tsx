@@ -5,10 +5,10 @@ import GalaxyBackground from '@/components/GalaxyBackground'
 export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
-			<GalaxyBackground />
-			<main className='max-w-7xl mx-auto px-6'>{children}</main>
-			<Footer />
 			<NavBar />
+			<GalaxyBackground />
+			<main className='max-w-7xl mx-auto px-6 pt-14'>{children}</main>
+			<Footer />
 		</>
 	)
 }
