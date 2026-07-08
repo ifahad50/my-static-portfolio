@@ -59,8 +59,11 @@ function SkillGroup({ block, groupIndex }: { block: SkillBlockProp; groupIndex: 
 	return (
 		<Fragment key={`${block.heading}-${groupIndex}`}>
 			<div className='w-full max-w-4xl flex items-center gap-3 mb-4'>
-				<span className='font-mono text-xs text-white/30 shrink-0'>$ ls {block.heading.toLowerCase().replace(/\s+/g, '-')}</span>
-				<div className='flex-1 h-px bg-white/[0.06]' />
+				<span className='font-mono text-[10px] text-white/22 shrink-0 tracking-[0.06em]'>
+					<span className='text-white/14'>$</span> ls ./{block.heading.toLowerCase().replace(/\s+/g, '_')}/
+				</span>
+				<div className='flex-1 h-px bg-white/[0.05]' />
+				<span className='font-mono text-[9px] text-white/16 shrink-0 tracking-[0.12em]'>{block.items.length} pkg</span>
 			</div>
 			<div ref={gridRef} className='flex flex-wrap w-full gap-2 md:max-w-4xl md:gap-3 items-center justify-center mb-8'>
 				{block.items.map((skill, idx) => (
@@ -107,10 +110,10 @@ function SkillChip({ skill }: { skill: SkillProp }) {
 			ref={chipRef}
 			onMouseEnter={handleEnter}
 			onMouseLeave={handleLeave}
-			className='flex flex-col items-center justify-center gap-2 w-20 md:w-28 p-2 md:p-3 min-h-[5.5rem] md:min-h-[7rem] rounded-xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-xl cursor-pointer hover:border-white/20 hover:bg-white/[0.07] transition-colors duration-200'
+			className='flex flex-col items-center justify-center gap-2 w-20 md:w-28 p-2 md:p-3 min-h-[5.5rem] md:min-h-[7rem] rounded-xl border border-white/[0.07] bg-white/[0.03] backdrop-blur-xl cursor-pointer hover:border-white/18 hover:bg-white/[0.06] transition-colors duration-200 group'
 		>
-			<div className='text-2xl md:text-3xl text-white/70'>{skill.icon}</div>
-			<p className='text-wrap text-center text-[10px] md:text-xs text-white/60 leading-tight line-clamp-2'>{skill.name}</p>
+			<div className='text-2xl md:text-3xl text-white/55 group-hover:text-white/80 transition-colors duration-200'>{skill.icon}</div>
+			<p className='text-wrap text-center font-mono text-[9px] md:text-[10px] text-white/45 group-hover:text-white/70 leading-tight line-clamp-2 transition-colors duration-200'>{skill.name}</p>
 		</div>
 	)
 }

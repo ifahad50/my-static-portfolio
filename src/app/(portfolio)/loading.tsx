@@ -1,9 +1,5 @@
-import { FaSpaceShuttle } from 'react-icons/fa'
+import LoadingScreen from '@/components/LoadingScreen'
 
-export default function Loader() {
-	return (
-		<div className='w-full h-screen flex flex-col items-center justify-center overflow-hidden'>
-			<FaSpaceShuttle className='text-6xl md:text-9xl animate-pulse animate-infinite animate-slow' />
-		</div>
-	)
+export default function Loading() {
+	return <LoadingScreen />
 }

@@ -91,16 +91,16 @@ export default function GalaxyBackground() {
 		const starTargets    = starElsRef.current.filter(Boolean) as HTMLDivElement[]
 		const shooterTargets = shooterElsRef.current.filter(Boolean) as HTMLDivElement[]
 
-		// Twinkle: gentle opacity oscillation, direction: 'alternate' avoids snap-back
-		// Stagger spreads the start times so stars don't all pulse in sync
+		// Breathing: keyframe cycle min→max→min so the loop point is seamless.
+		// direction:'alternate' is avoided because it causes a blank flash when
+		// all stars converge at minimum opacity simultaneously at the loop boundary.
 		if (starTargets.length) {
 			animate(starTargets, {
-				opacity:   [0.06, 0.95],
-				duration:  3200,
-				delay:     animeStagger(6, { from: 'random' }),
-				loop:      true,
-				direction: 'alternate',
-				easing:    'easeInOutSine',
+				opacity:  [0.22, 0.62, 0.22],
+				duration: 9600,
+				delay:    animeStagger(4),
+				loop:     true,
+				easing:   'easeInOutSine',
 			})
 		}
 
@@ -180,7 +180,7 @@ export default function GalaxyBackground() {
 							top:       s.y,
 							width:     s.size,
 							height:    s.size,
-							opacity:   0.06, // matches animation FROM value — no jump when anime.js takes over
+							opacity:   0.22, // matches animation FROM value — no jump when anime.js takes over
 							transform: 'translate(-50%, -50%)',
 						}}
 					/>
