@@ -47,7 +47,7 @@ function SubHeading({ text, className }: { text: string; className?: string }) {
 		<div ref={wrapRef} className={`my-10 md:my-14 ${className ?? ''}`}>
 			<div className='flex items-center gap-3 md:gap-4'>
 				<span className='font-mono text-xs text-white/30 select-none shrink-0'>
-					// {num}
+					{`// ${num}`}
 				</span>
 				<h3 className='text-xl md:text-2xl font-bold text-white tracking-tight'>
 					<span className='text-white/30 mr-1 font-mono font-normal text-lg'>{'<'}</span>

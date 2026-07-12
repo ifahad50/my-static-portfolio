@@ -25,7 +25,7 @@ function RecommendationCard({ rec, index }: { rec: RecommendationType; index: nu
 
 			{/* Top row: opening quote + rec ID */}
 			<div className='flex items-start justify-between'>
-				<span className='font-mono text-[22px] leading-none text-white/12 select-none'>"</span>
+				<span className='font-mono text-[22px] leading-none text-white/12 select-none'>{'"'}</span>
 				<span className='font-mono text-[9px] text-white/20 tracking-[0.22em] pt-1'>REC_{id}</span>
 			</div>
 
