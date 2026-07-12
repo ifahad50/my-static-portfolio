@@ -11,7 +11,7 @@ export async function getAllProjectSlugs(): Promise<string[]> {
 	return list
 }
 
-function normalizeImagePath(value: string | undefined, publicPath: string): string {
+function normalizeImagePath(value: string | null | undefined, publicPath: string): string {
 	if (!value) return ''
 	if (value.startsWith('/') || value.startsWith('http')) return value
 	return publicPath + value
@@ -24,7 +24,7 @@ export async function getProjectBySlug(slug: string): Promise<ProjectType | null
 		slug,
 		title: entry.title,
 		headerImage: normalizeImagePath(entry.headerImage, '/project-assets/'),
-		technologiesUsed: entry.technologiesUsed ?? [],
+		technologiesUsed: [...(entry.technologiesUsed ?? [])],
 		headerDescription: entry.headerDescription ?? '',
 	}
 }
@@ -41,7 +41,7 @@ export async function getAllProjects(): Promise<ProjectType[]> {
 			slug,
 			title: entry.title,
 			headerImage: normalizeImagePath(entry.headerImage, '/project-assets/'),
-			technologiesUsed: entry.technologiesUsed ?? [],
+			technologiesUsed: [...(entry.technologiesUsed ?? [])],
 			headerDescription: entry.headerDescription ?? '',
 		})
 	}
@@ -56,13 +56,15 @@ export async function getPostBySlug(slug: string) {
 	return reader.collections.posts.read(slug)
 }
 
-function normalizeBlogImage(value: string | undefined): string | undefined {
+function normalizeBlogImage(value: string | null | undefined): string | undefined {
 	if (!value) return undefined
 	if (value.startsWith('/') || value.startsWith('http')) return value
 	return '/blog-assets/' + value
 }
 
-export async function getAllPosts(): Promise<Array<{ slug: string; title: string; publishedAt: string; excerpt: string; coverImage?: string }>> {
+export async function getAllPosts(): Promise<
+	Array<{ slug: string; title: string; publishedAt: string; excerpt: string; coverImage?: string }>
+> {
 	const entries = await reader.collections.posts.all()
 	return entries
 		.map(({ slug, entry }) => ({

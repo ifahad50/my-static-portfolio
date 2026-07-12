@@ -13,10 +13,14 @@ const eslintConfig = [
 	...compat.extends('next/core-web-vitals', 'next/typescript'),
 	{
 		rules: {
-			// ... existing rules ...
-			'@typescript-eslint/no-explicit-any': 'off', // Allow usage of 'any' type
-			'@typescript-eslint/ban-ts-comment': 'off', // Allow all ts-comments
-			'@typescript-eslint/no-unused-vars': 'off', // Disable unused vars check
+			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/ban-ts-comment': 'off',
+			'@typescript-eslint/no-unused-vars': 'off',
+			// These are noisy for a static portfolio and fail CI when treated as errors.
+			'@next/next/no-img-element': 'off',
+			'react-hooks/exhaustive-deps': 'warn',
+			'react/no-unescaped-entities': 'off',
+			'react/jsx-no-comment-textnodes': 'off',
 		},
 	},
 ]

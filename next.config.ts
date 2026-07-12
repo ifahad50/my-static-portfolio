@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next'
 
-// GitHub Pages (and any STATIC_EXPORT=1 build) needs a static `out/` directory.
-// Local `next dev` / non-export builds keep server routes for Keystatic.
+// GitHub Pages needs a static `out/` directory. Local `next dev` keeps server
+// routes for Keystatic (API routes are stripped only in the Pages workflow).
 const isStaticExport =
 	process.env.STATIC_EXPORT === '1' || process.env.GITHUB_ACTIONS === 'true'
 
@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
 	reactStrictMode: false,
 	typescript: {
 		ignoreBuildErrors: true,
+	},
+	eslint: {
+		// Lint still runs; fail only on errors (warnings are allowed).
+		ignoreDuringBuilds: false,
 	},
 }
 

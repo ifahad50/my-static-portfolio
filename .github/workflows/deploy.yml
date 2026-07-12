@@ -59,9 +59,9 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
-        with:
-          # Injects basePath for project sites; ignored when a custom domain is set.
-          static_site_generator: next
+        # Do NOT set static_site_generator: next — it writes a blank next.config.js
+        # (only .js/.mjs supported) that overrides next.config.ts and drops
+        # output:'export' / typescript.ignoreBuildErrors. Custom domain needs no basePath.
 
       - name: Restore cache
         uses: actions/cache@v4
