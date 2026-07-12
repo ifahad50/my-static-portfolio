@@ -57,7 +57,11 @@ jobs:
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
       - name: Setup Pages
+        id: pages
         uses: actions/configure-pages@v4
+        with:
+          # Injects basePath for project sites; ignored when a custom domain is set.
+          static_site_generator: next
 
       - name: Restore cache
         uses: actions/cache@v4
@@ -73,7 +77,20 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
+      # Route handlers / Keystatic admin need a Node server and break `output: 'export'`.
+      # Content is still baked in from `content/`; edit locally with `next dev`.
+      - name: Remove Keystatic server routes for static export
+        run: rm -rf src/app/api src/app/keystatic
+
+      - name: Ensure CNAME is published
+        run: |
+          if [ -f CNAME ] && [ ! -f public/CNAME ]; then
+            cp CNAME public/CNAME
+          fi
+
       - name: Build with Next.js
+        env:
+          STATIC_EXPORT: '1'
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
 
       - name: Upload artifact
