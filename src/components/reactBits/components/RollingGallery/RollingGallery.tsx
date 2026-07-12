@@ -172,7 +172,7 @@ const RollingGallery: React.FC<RollingGalleryProps> = ({
 							}}
 							whileTap={{ cursor: 'grabbing' }}
 						>
-							<RecommendationCard recommendation={recommendation} />
+							<RecommendationCard rec={recommendation} index={i} />
 						</motion.div>
 					))}
 				</motion.div>

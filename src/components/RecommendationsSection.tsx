@@ -5,7 +5,7 @@ import SubHeading from './SubHeading'
 import { useEffect, useRef } from 'react'
 import { animate, stagger, remove as animeRemove } from 'animejs'
 
-function RecommendationCard({ rec, index }: { rec: RecommendationType; index: number }) {
+export function RecommendationCard({ rec, index }: { rec: RecommendationType; index: number }) {
 	const id = String(index + 1).padStart(3, '0')
 
 	return (
